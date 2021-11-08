@@ -46,3 +46,22 @@ for file in clean_tac_list:
 
 accelerometer_data_file_path = current_dir_path + \
     '/data/all_accelerometer_data_pids_13.csv'
+
+
+os.chdir('..')
+with open(accelerometer_data_file_path, 'r') as source:
+    with open('all_accelerometer_data_pids_13.csv', 'w', newline='') as dest:
+        dest.write(source.readline())
+        writer = csv.writer(dest)
+        writer.writerow([source.readline()])
+        for line in source.read().splitlines():
+            cols = line.split(',')
+            tup = [
+                datetime.utcfromtimestamp(
+                    int(cols[0])/1000).strftime('%Y-%m-%d %H:%M:%S'),
+                cols[1],
+                float(cols[2]),
+                float(cols[3]),
+                float(cols[4]),
+            ]
+            writer.writerow(tup)
